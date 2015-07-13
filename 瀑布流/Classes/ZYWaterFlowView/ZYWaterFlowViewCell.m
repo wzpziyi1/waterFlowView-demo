@@ -9,11 +9,4 @@
 #import "ZYWaterFlowViewCell.h"
 
 @implementation ZYWaterFlowViewCell
-- (instancetype)initWithIdentifier:(NSString *)identifier
-{
-    if (self = [super init]) {
-        self.identifier = identifier;
-    }
-    return self;
-}
 @end

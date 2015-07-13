@@ -7,7 +7,9 @@
 //
 
 #import "ZYWaterFlowViewCell.h"
-
+@class ZYShowModel,ZYWaterFlowView;
 @interface ZYShowCell : ZYWaterFlowViewCell
+@property (nonatomic, strong) ZYShowModel *showModel;
 
++ (id)cellWithWaterflowView:(ZYWaterFlowView *)waterFlowView;
 @end

@@ -50,20 +50,34 @@
     return _reusableCells;
 }
 
+- (CGFloat)cellWidth
+{
+    int numberOfColumns = (int)[self numberOfColumns];
+    CGFloat marginOfColumn = [self marginForType:ZYWaterFlowViewMarginTypeColumn];
+    CGFloat marginOfRight = [self marginForType:ZYWaterFlowViewMarginTypeRight];
+    CGFloat marginOfLeft = [self marginForType:ZYWaterFlowViewMarginTypeLeft];
+    CGFloat cellW = (self.frame.size.width - (numberOfColumns - 1) * marginOfColumn - marginOfLeft - marginOfRight) / numberOfColumns;
+    return cellW;
+}
+
 //刷新数据
 - (void)reloadData
 {
+    
+    
+    [self.displayingCells.allValues makeObjectsPerformSelector:@selector(removeFromSuperview)];//先把当前展示在scrollView上得移除，再去清空其他容器
+    [self.displayingCells removeAllObjects];
+    [self.cellFrames removeAllObjects];
+    [self.reusableCells removeAllObjects];
     int numberOfCells = (int)[self.dataSource numberOfCellsInWaterFlowView:self];
     
     int numberOfColumns = (int)[self numberOfColumns];
     
     CGFloat marginOfTop = [self marginForType:ZYWaterFlowViewMarginTypeTop];
-    CGFloat marginOfLeft = [self marginForType:ZYWaterFlowViewMarginTypeLeft];
     CGFloat marginOfBottom = [self marginForType:ZYWaterFlowViewMarginTypeBottom];
-    CGFloat marginOfRight = [self marginForType:ZYWaterFlowViewMarginTypeRight];
     CGFloat marginOfRow = [self marginForType:ZYWaterFlowViewMarginTypeRow];
+    CGFloat marginOfLeft = [self marginForType:ZYWaterFlowViewMarginTypeLeft];
     CGFloat marginOfColumn = [self marginForType:ZYWaterFlowViewMarginTypeColumn];
-    
     //这里，使用一个c语言数组，来装载每一列的最大高度
     //为什么不是oc数组？因为oc数组要装对象，还不能预先开好位置
     CGFloat maxYOfColumns[numberOfColumns];
@@ -71,7 +85,7 @@
         maxYOfColumns[i] = 0.0;
     }
     
-    CGFloat cellW = (self.frame.size.width - (numberOfColumns - 1) * marginOfColumn - marginOfLeft - marginOfRight) / numberOfColumns;
+    CGFloat cellW = [self cellWidth];
     
     for (int i = 0; i < numberOfCells; i++) {
         //最小的y所在列
@@ -166,6 +180,7 @@
     }
     return cell;
 }
+
 
 #pragma Private方法
 

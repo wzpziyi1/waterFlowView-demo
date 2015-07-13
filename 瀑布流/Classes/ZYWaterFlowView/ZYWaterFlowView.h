@@ -59,4 +59,7 @@ typedef enum {
 
 //需要根据标示符去缓存池找到对应的cell
 - (id)dequeueReusableCellWithIdentifier:(NSString *)identifier;
+
+//返回宽度，方便计算图片宽高比
+- (CGFloat)cellWidth;
 @end
