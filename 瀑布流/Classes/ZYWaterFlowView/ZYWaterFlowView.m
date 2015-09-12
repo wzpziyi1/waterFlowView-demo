@@ -139,25 +139,27 @@
     int numberOfCells = (int)[self.dataSource numberOfCellsInWaterFlowView:self];
     
     for (int i = 0; i < numberOfCells; i++) {
-        //先在scrollView上存在的cell里看当前cell是否存在scrollView上
+        //先在scrollView上存在的cell里看当前cell是否存在scrollView(self)上
         ZYWaterFlowViewCell *cell = self.displayingCells[@(i)];
         CGRect cellF = [self.cellFrames[i] CGRectValue];
         
-        if ([self isInScreen:cellF]) { //判断当前cell是否有在屏幕展示（注意，这里与在scrollView上展示不同）
+        if ([self isInScreen:cellF]) { //判断当前cell是否有在屏幕展示（注意，这里与在scrollView(self)上展示不同）
             if (cell == nil) {  //需要在屏幕展示，所以cell不存在的时候需要创建
                 cell = [self.dataSource waterFlowView:self cellAtIndex:i];
                 cell.frame = cellF;
                 [self addSubview:cell];
-                self.displayingCells[@(i)] = cell;  //添加到了scrollView上，所以将它加入数组
+                self.displayingCells[@(i)] = cell;  //添加到了scrollView上，所以将它加入字典中
             }
         }else
         {
             if (cell) { //没在屏幕上，所以不需要cell，把它放入缓存池
                 [cell removeFromSuperview];
-                [self.displayingCells removeObjectForKey:@(i)];
-                
+                [self.displayingCells removeObjectForKey:@(i)];  //这个字典是用来记录正展示在屏幕上得数组的，没有在
+                                                                // 屏幕上了，应当移除相应的cell
                 //放入缓存池
-                [self.reusableCells addObject:cell];
+                [self.reusableCells addObject:cell];            //既然要循环利用，那么创建了，就不应该在
+                                                                //ZYWaterFlowView生命周期还未结束之前被销毁
+                                                                //那么将之放入缓存池
             }
         }
         

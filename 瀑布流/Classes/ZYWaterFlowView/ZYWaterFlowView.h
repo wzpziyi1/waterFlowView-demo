@@ -44,20 +44,20 @@ typedef enum {
 - (CGFloat)waterFlowView:(ZYWaterFlowView *)waterFlowView marginForType:(ZYWaterFlowViewMarginType)type;
 
 //返回被选中的（孩子~~）cell
-- (ZYWaterFlowViewCell*)waterFlowView:(ZYWaterFlowView *)waterFlowView didSelectedAtIndex:(NSUInteger)index;
+- (ZYWaterFlowViewCell *)waterFlowView:(ZYWaterFlowView *)waterFlowView didSelectedAtIndex:(NSUInteger)index;
 
 @end
 
 @interface ZYWaterFlowView : UIScrollView
-//数据源
+
 @property (nonatomic, weak) id<ZYWaterFlowViewDataSource> dataSource;
-//代理
+
 @property (nonatomic, weak) id<ZYWaterFlowViewDelegate> delegate;
 
 //刷新数据
 - (void)reloadData;
 
-//需要根据标示符去缓存池找到对应的cell
+//根据identifier去缓存池找到对应的cell
 - (id)dequeueReusableCellWithIdentifier:(NSString *)identifier;
 
 //返回宽度，方便计算图片宽高比
